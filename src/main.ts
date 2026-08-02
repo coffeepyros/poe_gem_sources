@@ -1,47 +1,48 @@
-const app = document.querySelector<HTMLDivElement>('#app');
+type Chapter = { source: string; skills: string[] };
+type Result = { source: string; skill: string };
 
-const charClass : string = "scion";
+const app = document.querySelector<HTMLDivElement>("#app");
 
-type Chapter_Scion = {
-    source: string,
-    skills: string[]
-}
-type Result = {skill:string,source:string}
+// TEMPORARY CONFIG (I'm playing a Scion right now and building the tool primarily for myself)
+const charClass: string = "scion";
 
-async function search(e:Event) {
+// SEARCH FUNCTION + DATA LOADING
+async function search(e: Event) {
   e.preventDefault();
-  app!.innerHTML = "";
+  app!.innerHTML = ""; // reset output
   const input: string = (searchText as HTMLTextAreaElement).value;
-  const search : string[] = input.split("\n");
+  const search: string[] = input.split("\n");
 
   try {
     const response = await fetch(`./data/${charClass}.json`);
     const data = await response.json();
 
+    const result: Result[] = [];
 
-    const result:Result[] = [];
-
-    search.forEach(searchSkill => {
-        for (let i=0; i<data.length; i++) {
-            const chapter:Chapter_Scion = data[i];
-            if (chapter.skills.includes(searchSkill)) {
-                // console.log(chapter.source);
-                result.push({ skill: searchSkill, source: chapter.source});
-                break;
-                // only need first occurance, since that is the highest xp gem
-            }
+    search.forEach((searchSkill) => {
+      for (let i = 0; i < data.length; i++) {
+        const chapter: Chapter = data[i];
+        if (chapter.skills.includes(searchSkill)) {
+          // console.log(chapter.source);
+          result.push({ skill: searchSkill, source: chapter.source });
+          break;
+          // only need first occurance, since that is the highest xp gem
         }
-    })
+      }
+    });
 
-    result.sort((a:Result,b:Result) => {
-        if (a.source > b.source) return 1;
-        else return -1;
-    })
+    // SORTING
+    result.sort((a: Result, b: Result) => {
+      if (a.source > b.source) return 1;
+      else return -1;
+    });
 
-    result.forEach(skillResult => app!.innerHTML+= `<p>${skillResult.skill} &rarr; ${skillResult.source}</p>`)
-   
-  }
-  catch(error) { 
+    // RENDERING
+    result.forEach(
+      (skillResult) =>
+        (app!.innerHTML += `<p><em>${skillResult.skill}</em> &rarr; ${skillResult.source}</p>`),
+    );
+  } catch (error) {
     console.error(error);
   }
 }
@@ -49,6 +50,3 @@ async function search(e:Event) {
 const searchButton = document.getElementById("search-button");
 (searchButton as HTMLButtonElement).addEventListener("click", search);
 const searchText = document.getElementById("search-text");
-console.log(searchText)
-
-// setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
