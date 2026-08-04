@@ -22,7 +22,8 @@ async function search(e: Event) {
     search.forEach((searchSkill) => {
       for (let i = 0; i < data.length; i++) {
         const chapter: Chapter = data[i];
-        if (chapter.skills.includes(searchSkill)) {
+        // Support Skills don't need "* Support" in the name (often forgotten)
+        if (chapter.skills.includes(searchSkill.replace(" Support",""))) {
           // console.log(chapter.source);
           result.push({ skill: searchSkill, source: chapter.source });
           break;
