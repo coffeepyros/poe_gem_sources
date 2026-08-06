@@ -45,3 +45,6 @@ h1 {
 #search-button:hover {
   cursor: pointer;
 }
+#classSelection {
+  display: inline;
+}

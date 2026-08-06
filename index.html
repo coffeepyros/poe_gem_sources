@@ -9,12 +9,18 @@
   <body>
     <h1>Path of Exile Gem Sources</h1>
 
-    <p>List your (multiple) skill name(s), separeted by new lines:</p>
+    <section id="classSelection"></section>
+
+    <p>
+      List the gem names (including "Support") you are looking for - one skill
+      per line. Typos will not be found.
+    </p>
     <textarea name="search-text" id="search-text"></textarea>
     <button id="search-button">Search</button>
 
     <section id="app"></section>
 
-    <script src="src/main.ts"></script>
+    <script type="module" src="src/interface.ts"></script>
+    <script type="module" src="src/main.ts"></script>
   </body>
 </html>
